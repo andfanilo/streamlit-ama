@@ -1,12 +1,17 @@
+import json
 import streamlit as st
 
 from google.cloud import firestore
 from google.cloud.firestore import Client
+from google.oauth2 import service_account
 
 
 @st.experimental_singleton
 def get_db():
-    db = firestore.Client.from_service_account_json("key.json")
+    key_dict = json.loads(st.secrets["textkey"])
+    creds = service_account.Credentials.from_service_account_info(key_dict)
+    db = firestore.Client(credentials=creds, project="streamlit-ama-a2065")
+
     return db
 
 
