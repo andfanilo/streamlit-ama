@@ -15,11 +15,10 @@ def get_db():
     return db
 
 
-def post_message(db: Client, input_name, input_message, is_private):
+def post_message(db: Client, input_name, input_message):
     payload = {
         "name": input_name,
         "message": input_message,
-        "isPrivate": is_private,
         "answer": None,
     }
     doc_ref = db.collection("messages").document()
@@ -36,10 +35,9 @@ def main():
     with st.form(key="form"):
         input_name = st.text_input("Your name (optional)", help="can be anonymous")
         input_message = st.text_area("Your question?")
-        is_private = st.checkbox("Hide your message from the public board", False)
 
         if st.form_submit_button("Submit form"):
-            post_message(db, input_name, input_message, is_private)
+            post_message(db, input_name, input_message)
             st.success("Your message was posted!")
             st.balloons()
 
