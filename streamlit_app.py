@@ -1,5 +1,6 @@
 import json
 import streamlit as st
+from datetime import datetime
 
 from google.cloud import firestore
 from google.cloud.firestore import Client
@@ -20,6 +21,7 @@ def post_message(db: Client, input_name, input_message):
         "name": input_name,
         "message": input_message,
         "answer": None,
+        "date": datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
     }
     doc_ref = db.collection("messages").document()
 
