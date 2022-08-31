@@ -20,7 +20,7 @@ def post_message(db: Client, input_name, input_message):
     payload = {
         "name": input_name,
         "message": input_message,
-        "answer": None,
+        "answer": "",
         "date": datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
     }
     doc_ref = db.collection("messages").document()
