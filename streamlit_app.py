@@ -41,8 +41,8 @@ def main():
     db = get_db()
 
     with st.form(key="form"):
-        input_name = st.text_input("Your name (optional)", help="can be anonymous")
-        input_message = st.text_area("Your question?")
+        input_name = st.text_input("Your name (optional)", help="Can be anonymous")
+        input_message = st.text_area("Your message")
 
         if st.form_submit_button("Submit form"):
             post_message(db, input_name, input_message)
