@@ -28,7 +28,7 @@ def get_db():
 @st.cache_data(ttl=60)
 def get_all_messages():
     db = get_db()
-    all_messages = db.collection("messages").order_by("date").stream()
+    all_messages = db.collection("messages").order_by(Schema.date.value).stream()
     df = pd.DataFrame([m.to_dict() for m in all_messages])
     df = df[get_schema()]
     return df

@@ -6,6 +6,7 @@ import streamlit as st
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+from models import Schema
 
 @st.cache_resource
 def get_db():
@@ -15,10 +16,10 @@ def get_db():
 
 def post_message(db, input_name, input_message):
     payload = {
-        "name": input_name,
-        "message": input_message,
-        "answer": "",
-        "date": datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
+        Schema.name.value: input_name,
+        Schema.message.value: input_message,
+        Schema.answer.value: "",
+        Schema.date.value: datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
     }
     doc_ref = db.collection("messages").document()
     doc_ref.set(payload)
