@@ -12,14 +12,14 @@ from streamlit_elements import mui
 def get_db():
     key_dict = json.loads(st.secrets["textkey"])
     creds = service_account.Credentials.from_service_account_info(key_dict)
-    db = firestore.Client(credentials=creds, project="streamlit-ama-a2065")
+    db = firestore.Client(credentials=creds, project=st.secrets["project_name"])
     return db
 
 
 @st.experimental_memo
 def get_all_messages():
     db = get_db()
-    all_messages = db.collection("messages").stream()
+    all_messages = db.collection("messages").order_by("date").stream()
     return [m.to_dict() for m in all_messages]
 
 
