@@ -36,5 +36,5 @@ def main():
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="Fanilo's AMA | Admin", page_icon=":balloon:")
+    st.set_page_config(page_title="Fanilo's AMA | Admin", page_icon=":balloon:", layout="wide")
     main()
