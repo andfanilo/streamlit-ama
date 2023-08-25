@@ -52,7 +52,7 @@ if __name__ == "__main__":
         page_title="Fanilo's AMA | Admin", page_icon=":balloon:", layout="wide"
     )
 
-    key_dict = json.loads(st.secrets["textkey"])
+    key_dict = json.loads(st.secrets["secret_account_key"])
     creds = credentials.Certificate(key_dict)
 
     try:

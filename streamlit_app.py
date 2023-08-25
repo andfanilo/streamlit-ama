@@ -1,22 +1,19 @@
 import json
 from datetime import datetime
 
+import firebase_admin
 import streamlit as st
-from google.cloud import firestore
-from google.cloud.firestore import Client
-from google.oauth2 import service_account
+from firebase_admin import credentials
+from firebase_admin import firestore
 
 
 @st.cache_resource
 def get_db():
-    key_dict = json.loads(st.secrets["textkey"])
-    creds = service_account.Credentials.from_service_account_info(key_dict)
-    db = firestore.Client(credentials=creds, project=st.secrets["project_name"])
-
+    db = firestore.client()
     return db
 
 
-def post_message(db: Client, input_name, input_message):
+def post_message(db, input_name, input_message):
     payload = {
         "name": input_name,
         "message": input_message,
@@ -24,7 +21,6 @@ def post_message(db: Client, input_name, input_message):
         "date": datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
     }
     doc_ref = db.collection("messages").document()
-
     doc_ref.set(payload)
     return
 
@@ -52,4 +48,13 @@ def main():
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Fanilo's AMA", page_icon=":balloon:")
+
+    key_dict = json.loads(st.secrets["secret_account_key"])
+    creds = credentials.Certificate(key_dict)
+
+    try:
+        firebase_admin.get_app()
+    except ValueError:
+        firebase_admin.initialize_app(creds)
+
     main()
