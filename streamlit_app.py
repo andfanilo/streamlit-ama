@@ -44,7 +44,7 @@ def main():
         input_name = st.text_input("Your name (optional)", help="Can be anonymous")
         input_message = st.text_area("Your message")
 
-        if st.form_submit_button("Submit form"):
+        if st.form_submit_button("Submit form", disabled=(input_message=="")):
             post_message(db, input_name, input_message)
             st.success("Your message was posted!")
             st.balloons()
