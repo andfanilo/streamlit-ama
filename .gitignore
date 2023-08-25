@@ -1,3 +1,5 @@
 .vscode
 .streamlit
-key.json
+*.json
+
+__pycache__
