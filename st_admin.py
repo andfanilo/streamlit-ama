@@ -1,9 +1,10 @@
 import json
 
+import firebase_admin
 import pandas as pd
 import streamlit as st
-from google.cloud import firestore
-from google.oauth2 import service_account
+from firebase_admin import credentials
+from firebase_admin import firestore
 
 from models import Schema
 
@@ -19,9 +20,7 @@ def get_schema():
 
 @st.cache_resource
 def get_db():
-    key_dict = json.loads(st.secrets["textkey"])
-    creds = service_account.Credentials.from_service_account_info(key_dict)
-    db = firestore.Client(credentials=creds, project=st.secrets["project_name"])
+    db = firestore.client()
     return db
 
 
@@ -52,4 +51,13 @@ if __name__ == "__main__":
     st.set_page_config(
         page_title="Fanilo's AMA | Admin", page_icon=":balloon:", layout="wide"
     )
+
+    key_dict = json.loads(st.secrets["textkey"])
+    creds = credentials.Certificate(key_dict)
+
+    try:
+        firebase_admin.get_app()
+    except ValueError:
+        firebase_admin.initialize_app(creds)
+
     main()
