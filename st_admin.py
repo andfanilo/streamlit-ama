@@ -25,7 +25,7 @@ def get_db():
     return db
 
 
-@st.cache_resource
+@st.cache_data(ttl=60)
 def get_all_messages():
     db = get_db()
     all_messages = db.collection("messages").order_by("date").stream()
