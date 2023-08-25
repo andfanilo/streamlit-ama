@@ -32,10 +32,10 @@ def post_message(db: Client, input_name, input_message):
 def main():
     st.title("Fanilo's AMA")
     st.markdown(
-        "Accepting questions around content creation/YouTube/Twitter, Streamlit/Python/Data Science libraries, career life/non-invasive personal life in general"
+        "Accepting questions/rants/compliments around content creation/YouTube/Twitter, Streamlit/Python/Data Science libraries, career life/non-invasive personal life in general"
     )
     st.markdown(
-        "Answers may appear on my [Twitter account](https://twitter.com/andfanilo), or in a future [Youtube video](https://www.youtube.com/c/FaniloAndrianasolo)"
+        "Answers may appear in a future [Youtube 5k AMA video](https://www.youtube.com/@andfanilo/)"
     )
 
     db = get_db()
