@@ -1,4 +1,5 @@
 import json
+import pandas as pd
 import streamlit as st
 
 from google.cloud import firestore
@@ -17,7 +18,7 @@ def get_db():
 def get_all_messages():
     db = get_db()
     all_messages = db.collection("messages").order_by("date").stream()
-    return [m.to_dict() for m in all_messages]
+    return pd.DataFrame([m.to_dict() for m in all_messages])
 
 
 def main():
@@ -31,8 +32,7 @@ def main():
 
     st.title(":balloon: Fanilo's AMA | Admin dashboard")
 
-    with st.expander("Show all questions"):
-        st.write(all_messages)
+    st.dataframe(all_messages)
 
 
 if __name__ == "__main__":
