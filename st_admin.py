@@ -5,7 +5,6 @@ import streamlit as st
 from google.cloud import firestore
 from google.oauth2 import service_account
 
-from models import get_schema
 from models import Schema
 
 
