@@ -8,7 +8,7 @@ from streamlit_elements import html
 from streamlit_elements import mui
 
 
-@st.experimental_singleton
+@st.cache_resource
 def get_db():
     key_dict = json.loads(st.secrets["textkey"])
     creds = service_account.Credentials.from_service_account_info(key_dict)
@@ -16,7 +16,7 @@ def get_db():
     return db
 
 
-@st.experimental_memo
+@st.cache_resource
 def get_all_messages():
     db = get_db()
     all_messages = db.collection("messages").order_by("date").stream()
@@ -26,6 +26,12 @@ def get_all_messages():
 def main():
     if "page" not in st.session_state:
         st.session_state.page = 0
+
+    with st.sidebar:
+        entered_pwd = st.text_input("Enter Password", type="password")
+    if entered_pwd != st.secrets["admin_password"]:
+        st.error("Enter correct password", icon="🚨")
+        st.stop()
 
     def handle_change(_, page):
         st.session_state.page = page - 1
@@ -60,6 +66,9 @@ def main():
             )
 
         mui.Pagination(count=len(all_messages), defaultPage=1, onChange=handle_change)
+
+    with st.expander("Show all questions"):
+        st.write(all_messages)
 
 
 if __name__ == "__main__":
