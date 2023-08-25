@@ -2,6 +2,7 @@ import json
 
 import firebase_admin
 import pandas as pd
+import requests
 import streamlit as st
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -33,11 +34,35 @@ def get_all_messages():
     return df
 
 
+@st.cache_data(ttl=60)
+def login(email, password):
+    url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={ st.secrets['api_key'] }"
+    headers = {"Content-Type": "application/json"}
+    data = {"email": email, "password": password, "returnSecureToken": True}
+    response = requests.post(url, headers=headers, json=data)
+    response_data = response.json()
+    return response_data
+
+
 def main():
-    with st.sidebar:
+    if "auth_status" not in st.session_state:
+        st.session_state["auth_status"] = None
+
+    with st.sidebar.form("auth"):
+        entered_email = st.text_input("Enter Email")
         entered_pwd = st.text_input("Enter Password", type="password")
-    if entered_pwd != st.secrets["admin_password"]:
-        st.error("Enter correct password", icon="🚨")
+        if st.form_submit_button("Login", type="primary"):
+            st.session_state["auth_status"] = login(entered_email, entered_pwd)
+
+    if st.session_state["auth_status"] is None:
+        st.info("Please Login", icon="🔑")
+        st.stop()
+
+    if "error" in st.session_state["auth_status"]:
+        st.error(
+            f'Login Error: {st.session_state["auth_status"]["error"]["message"]}',
+            icon="🚨",
+        )
         st.stop()
 
     all_messages = get_all_messages()
