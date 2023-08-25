@@ -7,7 +7,7 @@ from google.cloud.firestore import Client
 from google.oauth2 import service_account
 
 
-@st.experimental_singleton
+@st.cache_resource
 def get_db():
     key_dict = json.loads(st.secrets["textkey"])
     creds = service_account.Credentials.from_service_account_info(key_dict)
