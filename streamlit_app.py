@@ -32,7 +32,7 @@ def main():
         "Accepting questions/rants/compliments around content creation/YouTube/Twitter, Streamlit/Python/Data Science libraries, career life/non-invasive personal life in general"
     )
     st.markdown(
-        "Answers may appear in a future [Youtube 5k AMA video](https://www.youtube.com/@andfanilo/)"
+        "Answers may appear in a future [Youtube 10k AMA video](https://www.youtube.com/@andfanilo/)"
     )
 
     db = get_db()
@@ -41,11 +41,19 @@ def main():
         input_name = st.text_input("Your name (optional)", help="Can be anonymous")
         input_message = st.text_area("Your message")
 
-        if st.form_submit_button("Submit form"):
-            post_message(db, input_name, input_message)
-            st.success("Your message was posted!")
-            st.balloons()
+        if st.form_submit_button("Submit form", type="primary"):
+            if not input_message:
+                st.error("Please provide a message :balloon:")
+                        
+            else:
+                post_message(db, input_name, input_message)
+                st.success("Your message was posted!")
+                st.balloons()
 
+    with st.sidebar:
+        st.subheader("Where to find me")
+        st.link_button("🌐 My socials", "https://andfanilo.com/")
+        st.link_button("📧 My email list", "https://andfanilo-newsletter.streamlit.app/")
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Fanilo's AMA", page_icon=":balloon:")
